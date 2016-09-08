@@ -8,7 +8,6 @@ matrix:
    - jdk: openjdk6
      env: OPTIONS='-pl !elk-owlapi,!elk-owlapi-standalone,!elk-protege,!elk-distribution'
    - jdk: oraclejdk7
-     env: DEPLOY=true
    - jdk: openjdk7
    - jdk: oraclejdk8
 
