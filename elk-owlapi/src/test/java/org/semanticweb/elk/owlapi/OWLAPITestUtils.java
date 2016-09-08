@@ -27,6 +27,8 @@ package org.semanticweb.elk.owlapi;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.semanticweb.elk.owl.parsing.Owl2ParseException;
 import org.semanticweb.elk.reasoner.config.ReasonerConfiguration;
@@ -47,9 +49,26 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
  */
 public class OWLAPITestUtils {
 
+	private static OWLOntologyManager sharedOwlManager_ = null;
+
+	public static OWLOntologyManager getSharedOwlManager() {
+		if (sharedOwlManager_ == null) {
+			sharedOwlManager_ = OWLManager.createOWLOntologyManager();
+		}
+		return sharedOwlManager_;
+	}
+
+	public static void removeAllOntologies(final OWLOntologyManager manager) {
+		final List<OWLOntology> ontologies = new ArrayList<OWLOntology>(
+				manager.getOntologies());
+		for (final OWLOntology ontology : ontologies) {
+			manager.removeOntology(ontology);
+		}
+	}
+
 	public static ElkReasoner createReasoner(InputStream stream)
 			throws IOException, Owl2ParseException {
-		OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+		OWLOntologyManager manager = getSharedOwlManager();
 		OWLOntology ontology = null;
 
 		try {

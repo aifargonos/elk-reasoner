@@ -37,7 +37,6 @@ import org.semanticweb.elk.testing.UrlTestInput;
 import org.semanticweb.elk.util.collections.ArrayHashSet;
 import org.semanticweb.elk.util.logging.LogLevel;
 import org.semanticweb.elk.util.logging.LoggerWrap;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -71,8 +70,8 @@ public abstract class OwlApiIncrementalReasoningTestDelegate<EO extends TestOutp
 		this.inputAxioms_ = new ArrayHashSet<OWLAxiom>();
 		final ArrayList<OWLAxiom> changingAxioms = new ArrayList<OWLAxiom>();
 
-		final OWLOntologyManager manager = OWLManager
-				.createOWLOntologyManager();
+		final OWLOntologyManager manager = OWLAPITestUtils
+				.getSharedOwlManager();
 
 		final InputStream stream = manifest_.getInput().getUrl().openStream();
 		final OWLOntology ontology = manager
@@ -90,8 +89,8 @@ public abstract class OwlApiIncrementalReasoningTestDelegate<EO extends TestOutp
 
 	@Override
 	public void init() throws Exception {
-		final OWLOntologyManager manager = OWLManager
-				.createOWLOntologyManager();
+		final OWLOntologyManager manager = OWLAPITestUtils
+				.getSharedOwlManager();
 
 		testOntology_ = manager.createOntology(inputAxioms_);
 		// important to use the buffering mode here
@@ -136,7 +135,9 @@ public abstract class OwlApiIncrementalReasoningTestDelegate<EO extends TestOutp
 
 	@Override
 	public void dispose() {
-		// Empty.
+		final OWLOntologyManager manager = OWLAPITestUtils
+				.getSharedOwlManager();
+		OWLAPITestUtils.removeAllOntologies(manager);
 	}
 
 }

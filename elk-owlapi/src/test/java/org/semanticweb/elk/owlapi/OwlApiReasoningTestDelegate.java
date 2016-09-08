@@ -27,6 +27,7 @@ import org.semanticweb.elk.reasoner.ReasoningTestWithInterruptsDelegate;
 import org.semanticweb.elk.testing.TestManifest;
 import org.semanticweb.elk.testing.TestOutput;
 import org.semanticweb.elk.testing.UrlTestInput;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 public abstract class OwlApiReasoningTestDelegate<AO extends TestOutput>
 		implements ReasoningTestWithInterruptsDelegate<AO> {
@@ -53,7 +54,9 @@ public abstract class OwlApiReasoningTestDelegate<AO extends TestOutput>
 
 	@Override
 	public void dispose() {
-		// Empty.
+		final OWLOntologyManager manager = OWLAPITestUtils
+				.getSharedOwlManager();
+		OWLAPITestUtils.removeAllOntologies(manager);
 	}
 
 }
