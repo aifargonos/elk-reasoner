@@ -56,8 +56,8 @@ public abstract class OwlApiIncrementalReasoningTestDelegate<EO extends TestOutp
 	protected Set<OWLAxiom> inputAxioms_;
 
 	protected OWLOntology testOntology_;
-	protected ElkReasoner standardReasoner_;
-	protected ElkReasoner incrementalReasoner_;
+	protected ElkReasoner standardReasoner_ = null;
+	protected ElkReasoner incrementalReasoner_ = null;
 
 	public OwlApiIncrementalReasoningTestDelegate(
 			TestManifest<? extends UrlTestInput> manifest) {
@@ -135,6 +135,12 @@ public abstract class OwlApiIncrementalReasoningTestDelegate<EO extends TestOutp
 
 	@Override
 	public void dispose() {
+		if (incrementalReasoner_ != null) {
+			incrementalReasoner_.dispose();
+		}
+		if (standardReasoner_ != null) {
+			standardReasoner_.dispose();
+		}
 		final OWLOntologyManager manager = OWLAPITestUtils
 				.getSharedOwlManager();
 		OWLAPITestUtils.removeAllOntologies(manager);

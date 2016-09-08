@@ -34,7 +34,7 @@ public abstract class OwlApiReasoningTestDelegate<AO extends TestOutput>
 
 	protected final TestManifest<? extends UrlTestInput> manifest_;
 
-	protected ElkReasoner reasoner_;
+	protected ElkReasoner reasoner_ = null;
 
 	public OwlApiReasoningTestDelegate(
 			final TestManifest<? extends UrlTestInput> manifest) {
@@ -54,6 +54,9 @@ public abstract class OwlApiReasoningTestDelegate<AO extends TestOutput>
 
 	@Override
 	public void dispose() {
+		if (reasoner_ != null) {
+			reasoner_.dispose();
+		}
 		final OWLOntologyManager manager = OWLAPITestUtils
 				.getSharedOwlManager();
 		OWLAPITestUtils.removeAllOntologies(manager);
