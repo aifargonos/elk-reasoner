@@ -108,7 +108,7 @@ public class Reasoner extends AbstractReasonerState {
 		this.progressMonitor = new DummyProgressMonitor();
 		this.allowFreshEntities = true;
 		setConfigurationOptions(config);
-		this.executor_ = new ComputationExecutor(workerNo_, "elk-reasoner", 4,
+		this.executor_ = new ComputationExecutor(workerNo_, "elk-reasoner", 1,
 				TimeUnit.SECONDS);
 
 		LOGGER_.info("ELK reasoner was created");
