@@ -144,7 +144,7 @@ public class OWLAPIRandomWalkIncrementalClassificationTest {
 				throw new Owl2ParseException(e);
 			}
 
-			incrementalReasoner = new ElkReasoner(ontology, true,
+			incrementalReasoner = OWLAPITestUtils.createReasoner(ontology, true,
 					new PostProcessingStageExecutor());
 			
 			// let the runner run..
@@ -218,7 +218,7 @@ public class OWLAPIRandomWalkIncrementalClassificationTest {
 				throw new RuntimeException(e);
 			}
 			
-			Reasoner result = new ElkReasoner(ontology, false,
+			Reasoner result = OWLAPITestUtils.createReasoner(ontology, false,
 					new SimpleStageExecutor()).getInternalReasoner();
 			manager.removeOntology(ontology);
 			return result;
