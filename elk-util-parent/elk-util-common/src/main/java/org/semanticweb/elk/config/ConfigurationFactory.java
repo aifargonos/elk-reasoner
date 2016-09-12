@@ -109,8 +109,7 @@ public class ConfigurationFactory {
 			final Class<C> configClass)
 			throws ConfigurationException {
 
-		@SuppressWarnings("unchecked")
-		final C config = (C) instantiate(configClass);
+		final C config = instantiate(configClass);
 
 		copyParameters(prefix, config, bundle);
 
@@ -193,10 +192,10 @@ public class ConfigurationFactory {
 		}
 	}
 
-	private static BaseConfiguration instantiate(
-			Class<? extends BaseConfiguration> configClass)
+	private static <C extends BaseConfiguration> C instantiate(
+			Class<C> configClass)
 			throws ConfigurationException {
-		BaseConfiguration config = null;
+		C config = null;
 
 		try {
 			config = configClass.getConstructor().newInstance();
