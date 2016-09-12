@@ -104,6 +104,19 @@ public class ConfigurationFactory {
 		return config;
 	}
 
+	public <C extends BaseConfiguration> C getConfiguration(final ResourceBundle bundle,
+			final String prefix,
+			final Class<C> configClass)
+			throws ConfigurationException {
+
+		@SuppressWarnings("unchecked")
+		final C config = (C) instantiate(configClass);
+
+		copyParameters(prefix, config, bundle);
+
+		return config;
+	}
+
 	/**
 	 * Not a thread-safe method. Shouldn't be invoked concurrently.
 	 * 

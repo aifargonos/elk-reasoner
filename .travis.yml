@@ -13,7 +13,7 @@ matrix:
 
 install: mvn install -DskipTests=true $OPTIONS
 
-script: mvn test -Dassembly.skipAssembly=true -B $OPTIONS
+script: mvn test -Dassembly.skipAssembly=true -Dmaven.test.additionalClasspath="./.travis/" -B $OPTIONS
 
 after_success:
   - test "$DEPLOY" = true -a "$TRAVIS_PULL_REQUEST" = false -a "$TRAVIS_BRANCH" = master

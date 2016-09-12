@@ -29,8 +29,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
+import org.semanticweb.elk.config.ConfigurationFactory;
 import org.semanticweb.elk.owl.parsing.Owl2ParseException;
+import org.semanticweb.elk.reasoner.TestReasonerUtils;
 import org.semanticweb.elk.reasoner.config.ReasonerConfiguration;
 import org.semanticweb.elk.reasoner.stages.ReasonerStageExecutor;
 import org.semanticweb.elk.reasoner.stages.RestartingStageExecutor;
@@ -79,11 +84,11 @@ public class OWLAPITestUtils {
 			throw new Owl2ParseException(e);
 		}
 
-		return new ElkReasoner(ontology, false, new RestartingStageExecutor());
+		return createReasoner(ontology, false, new RestartingStageExecutor());
 	}
 
 	public static ElkReasoner createReasoner(OWLOntology ontology) {
-		return new ElkReasoner(ontology, false, new RestartingStageExecutor());
+		return createReasoner(ontology, false, new RestartingStageExecutor());
 	}
 	
 	public static ElkProver createProver(OWLOntology ontology) {
@@ -101,7 +106,25 @@ public class OWLAPITestUtils {
 	public static ElkReasoner createReasoner(final OWLOntology ontology,
 			final boolean isBufferingMode,
 			final ReasonerStageExecutor stageExecutor) {
-		return new ElkReasoner(ontology, isBufferingMode, stageExecutor);
+
+		ReasonerConfiguration config = null;
+		try {
+			final ResourceBundle bundle = ResourceBundle.getBundle(
+					TestReasonerUtils.TEST_CONFIG_NAME, Locale.getDefault(),
+					ReasonerConfiguration.class.getClassLoader());
+			config = new ConfigurationFactory().getConfiguration(bundle,
+					ReasonerConfiguration.REASONER_CONFIG_PREFIX,
+					ReasonerConfiguration.class);
+		} catch (MissingResourceException e) {
+			config = ReasonerConfiguration.getConfiguration();
+		}
+
+		return new ElkReasoner(ontology, isBufferingMode,
+				new ElkReasonerConfiguration(
+						ElkReasonerConfiguration
+								.getDefaultOwlReasonerConfiguration(null),
+						config),
+				stageExecutor);
 	}
 
 }

@@ -32,8 +32,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.HashSet;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.semanticweb.elk.config.ConfigurationFactory;
 import org.semanticweb.elk.loading.AxiomLoader;
 import org.semanticweb.elk.owl.interfaces.ElkAxiom;
 import org.semanticweb.elk.owl.iris.ElkPrefix;
@@ -53,6 +57,8 @@ import org.semanticweb.elk.reasoner.stages.ReasonerStageExecutor;
  */
 public class TestReasonerUtils {
 
+	public static final String TEST_CONFIG_NAME = "elk-test";
+
 	public static Reasoner createTestReasoner(AxiomLoader axiomLoader,
 			ReasonerStageExecutor stageExecutor, ReasonerConfiguration config) {
 		return new ReasonerFactory().createReasoner(axiomLoader, stageExecutor,
@@ -61,8 +67,20 @@ public class TestReasonerUtils {
 
 	public static Reasoner createTestReasoner(AxiomLoader axiomLoader,
 			ReasonerStageExecutor stageExecutor) {
-		return createTestReasoner(axiomLoader, stageExecutor,
-				ReasonerConfiguration.getConfiguration());
+
+		ReasonerConfiguration config = null;
+		try {
+			final ResourceBundle bundle = ResourceBundle.getBundle(
+					TEST_CONFIG_NAME, Locale.getDefault(),
+					ReasonerConfiguration.class.getClassLoader());
+			config = new ConfigurationFactory().getConfiguration(bundle,
+					ReasonerConfiguration.REASONER_CONFIG_PREFIX,
+					ReasonerConfiguration.class);
+		} catch (MissingResourceException e) {
+			config = ReasonerConfiguration.getConfiguration();
+		}
+
+		return createTestReasoner(axiomLoader, stageExecutor, config);
 	}
 
 	public static Reasoner createTestReasoner(AxiomLoader axiomLoader,

@@ -28,8 +28,8 @@ import org.semanticweb.elk.loading.AxiomLoader;
 import org.semanticweb.elk.loading.Owl2StreamLoader;
 import org.semanticweb.elk.owl.parsing.javacc.Owl2FunctionalStyleParserFactory;
 import org.semanticweb.elk.reasoner.Reasoner;
-import org.semanticweb.elk.reasoner.ReasonerFactory;
 import org.semanticweb.elk.reasoner.ReasoningTestWithInterruptsDelegate;
+import org.semanticweb.elk.reasoner.TestReasonerUtils;
 import org.semanticweb.elk.reasoner.stages.RestartingStageExecutor;
 import org.semanticweb.elk.testing.TestManifest;
 import org.semanticweb.elk.testing.TestOutput;
@@ -53,7 +53,7 @@ public abstract class CliReasoningTestDelegate<AO extends TestOutput>
 		input_ = manifest_.getInput().getUrl().openStream();
 		final AxiomLoader loader = new Owl2StreamLoader(
 				new Owl2FunctionalStyleParserFactory(), input_);
-		reasoner_ = new ReasonerFactory().createReasoner(loader,
+		reasoner_ = TestReasonerUtils.createTestReasoner(loader,
 				new RestartingStageExecutor());
 	}
 

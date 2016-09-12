@@ -96,11 +96,11 @@ public abstract class OwlApiIncrementalReasoningTestDelegate<EO extends TestOutp
 		// important to use the buffering mode here
 		// otherwise we'd need to issue a query to the ElkReasoner
 		// before we could use the internal reasoner directly in the tests
-		standardReasoner_ = new ElkReasoner(testOntology_, true,
+		standardReasoner_ = OWLAPITestUtils.createReasoner(testOntology_, true,
 				new PostProcessingStageExecutor());
 		standardReasoner_.getInternalReasoner().setAllowIncrementalMode(false);
-		incrementalReasoner_ = new ElkReasoner(testOntology_, true,
-				new PostProcessingStageExecutor());
+		incrementalReasoner_ = OWLAPITestUtils.createReasoner(testOntology_,
+				true, new PostProcessingStageExecutor());
 		incrementalReasoner_.getInternalReasoner()
 				.setAllowIncrementalMode(true);
 	}
